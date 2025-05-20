@@ -1,24 +1,24 @@
-name: Terraform Simulated Deployment
+name: Terraform Test Pipeline
 
 on:
   push:
     branches:
-      - main
-      - dev
-      - test  # optional: include test if needed
+      - test
+  pull_request:
+    branches:
+      - test
 
 jobs:
   terraform:
+    name: Test Terraform
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Code
+      - name: Checkout code
         uses: actions/checkout@v3
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
-        with:
-          terraform_version: 1.5.7  # use your version
 
       - name: Terraform Init
         run: terraform init
@@ -26,8 +26,11 @@ jobs:
       - name: Terraform Validate
         run: terraform validate
 
-      - name: Terraform Plan (Simulated)
+      - name: Terraform Plan
         run: terraform plan -no-color
 
-      - name: ✅ Output success message
-        run: echo "✅ yes terraform is deployed"
+      - name: Terraform Apply (Auto-approve)
+        run: terraform apply -auto-approve -no-color
+
+      - name: ✅ Print Success Message
+        run: echo "✅ Terraform workflow completed successfully"
