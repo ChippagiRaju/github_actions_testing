@@ -1,0 +1,9 @@
+version: '3.8'
+
+services:
+  karehp_sampleTesting:
+    container_name: karehp_sampletesting
+    image: karesample:v1
+    ports:
+      - "3000:80"
+
